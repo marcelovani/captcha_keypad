@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @file captcha_keypad.module
+ * Captcha keypad module.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function captcha_keypad_help($path, $arg) {
+  switch ($path) {
+    case 'admin/config/captcha_keypad':
+      return '<p>' . t('todo.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function captcha_keypad_menu() {
+  $items = array();
+
+  $items['admin/config/captcha_keypad'] = array(
+    'title' => 'myPage',
+    'page callback' => 'example_page',
+    'page arguments' => array(),
+    'access arguments' => array('access content'),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function captcha_keypad_permission() {
+  $permissions = array();
+
+  $permissions['administer captcha_keypad'] = array(
+    'title' => t('Administer Capcha keypad'),
+  );
+  return $permissions;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
+  var_dump($form_id);
+}
