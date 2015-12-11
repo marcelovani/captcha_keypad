@@ -21,10 +21,13 @@ function captcha_keypad_help($path, $arg) {
 function captcha_keypad_menu() {
   $items = array();
 
-  $items['admin/config/captcha_keypad'] = array(
-    'title' => 'Admin Captcha Keypad',
-    'page callback' => 'captcha_keypad_settings_form',
+  $items['admin/config/system/captcha_keypad'] = array(
+    'title' => 'Captcha Keypad',
+    'description' => 'Configure Captcha Keypad.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('captcha_keypad_settings_form'),
     'access arguments' => array('administer captcha keypad'),
+    'file' => 'captcha_keypad.admin.inc',
   );
 
   return $items;
@@ -48,7 +51,7 @@ function captcha_keypad_permission() {
 function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
   var_dump($form_id);
 
-  $forms = array('user_login', 'article_node_form'); //@todo use variable_get
+  $forms = array('user_login', 'article_node_form','comment_node_article_form'); //@todo use variable_get
 
   if (!in_array($form_id, $forms)) {
     return;

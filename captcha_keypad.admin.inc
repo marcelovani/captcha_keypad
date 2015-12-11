@@ -12,7 +12,9 @@ function captcha_keypad_settings_form($form, &$form_state) {
   $form['captcha_keypad_code_size'] = array(
     '#type' => 'textfield',
     '#title' => t('Code size'),
-    '#description' => t('Used to generate codes'),
+    '#description' => t('Size of the code.'),
+    '#size' => 2,
+    '#maxlength' => 2,
     '#default_value' => variable_get('captcha_keypad_code_size', 4),
     '#required' => TRUE,
   );
