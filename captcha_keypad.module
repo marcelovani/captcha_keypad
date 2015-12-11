@@ -48,7 +48,7 @@ function captcha_keypad_permission() {
 function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
   var_dump($form_id);
 
-  $forms = array('user_login'); //@todo use variable_get
+  $forms = array('user_login', 'article_node_form'); //@todo use variable_get
 
   if (!in_array($form_id, $forms)) {
     return;
@@ -66,7 +66,6 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
     '#title' => t('Enter code'),
     '#type' => 'textfield',
     '#size' => $code_size,
-    '#disabled' => TRUE,
   );
 
   $form['captcha_keypad']['captcha_keypad_hidden'] = array(
@@ -74,21 +73,41 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
     '#value' => $code,
   );
 
-  $keypad = '<span class="captcha-keypad"><span class="inner">';
+  $keypad = '';
   for ($n=1; $n<=9; $n++) {
     $keypad .= '<span>' . $n . '</span>';
   }
-  $keypad .= '</span></span>';
   $form['captcha_keypad']['keypad'] = array(
-    //'#theme' => 'aaa',
+    '#prefix' => '<span class="captcha-keypad"><span class="inner">',
     '#markup' => $keypad,
+    '#suffix' => '</span></span>',
   );
 
   $form['captcha_keypad']['code'] = array(
+    '#prefix' => '<span>',
     '#markup' => t('Using the keypad, enter the following code: <strong>:code</strong>', array(':code' => $code)),
+    '#suffix' => '</span>',
   );
 
+  $form['#validate'][] = 'captcha_keypad_form_validate';
+
+  _captcha_keypad_add_js_css();
+}
+
+/**
+ * Callback function for form submit.
+ */
+function captcha_keypad_form_validate(&$form, &$form_state) {
+  if ($form_state['values']['captcha_keypad_input'] != $form_state['values']['captcha_keypad_hidden']) {
+    _captcha_keypad_add_js_css();
+    form_set_error('captcha_keypad_input', t('Invalid security code.'));
+  }
+}
+
+/**
+ * Helper to add css and javascript.
+ */
+function _captcha_keypad_add_js_css() {
   drupal_add_js(drupal_get_path('module', 'captcha_keypad') . '/captcha_keypad.js');
   drupal_add_css(drupal_get_path('module', 'captcha_keypad') . '/captcha_keypad.css');
-
 }
