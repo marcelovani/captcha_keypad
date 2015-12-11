@@ -51,14 +51,14 @@ function captcha_keypad_permission() {
 function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
   var_dump($form_id);
 
-  $forms = array('user_login', 'article_node_form','comment_node_article_form'); //@todo use variable_get
+  $forms = array('user_login', 'article_node_form', 'comment_node_article_form'); //@todo use variable_get
 
   if (!in_array($form_id, $forms)) {
     return;
   }
 
-  $code_size = variable_get('captcha_keypad_code_size', 4);
-  $code = '1234';
+  $digits = variable_get('captcha_keypad_code_size', 4);
+  $code = _captcha_keypad_get_code($digits);
 
   $form['captcha_keypad'] = array(
     '#title' => t('Security'),
@@ -68,7 +68,7 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
   $form['captcha_keypad']['captcha_keypad_input'] = array(
     '#title' => t('Enter code'),
     '#type' => 'textfield',
-    '#size' => $code_size,
+    '#size' => $digits,
   );
 
   $form['captcha_keypad']['captcha_keypad_hidden'] = array(
@@ -77,7 +77,7 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
   );
 
   $keypad = '';
-  for ($n=1; $n<=9; $n++) {
+  for ($n = 1; $n <= 9; $n++) {
     $keypad .= '<span>' . $n . '</span>';
   }
   $form['captcha_keypad']['keypad'] = array(
@@ -88,7 +88,7 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
 
   $form['captcha_keypad']['code'] = array(
     '#prefix' => '<span>',
-    '#markup' => t('Using the keypad, enter the following code: <strong>:code</strong>', array(':code' => $code)),
+    '#markup' => t('Using the mouse, click this sequence: <strong>:code</strong>', array(':code' => $code)),
     '#suffix' => '</span>',
   );
 
@@ -105,6 +105,15 @@ function captcha_keypad_form_validate(&$form, &$form_state) {
     _captcha_keypad_add_js_css();
     form_set_error('captcha_keypad_input', t('Invalid security code.'));
   }
+}
+
+/**
+ * Helper to generate the code.
+ */
+function _captcha_keypad_get_code($digits) {
+  $code = rand(pow(10, $digits - 1), pow(10, $digits) - 1);
+  $code = str_replace('0', '1', $code . '');
+  return $code;
 }
 
 /**
