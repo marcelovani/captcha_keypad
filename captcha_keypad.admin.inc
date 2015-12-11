@@ -9,14 +9,14 @@
  * Form builder.
  */
 function captcha_keypad_settings_form($form, &$form_state) {
-  $form['captcha_keypad_variable_foo'] = array(
+  $form['captcha_keypad_code_size'] = array(
     '#type' => 'textfield',
-    '#title' => t('Foo'),
-    '#default_value' => variable_get('captcha_keypad_variable_foo', 42),
+    '#title' => t('Code size'),
+    '#description' => t('Used to generate codes'),
+    '#default_value' => variable_get('captcha_keypad_code_size', 4),
     '#required' => TRUE,
   );
 
-  // TODO! You probably don't need validation or submit handlers if using system_settings_form().
   return system_settings_form($form);
 }
 
@@ -24,9 +24,9 @@ function captcha_keypad_settings_form($form, &$form_state) {
  * Form validate handler.
  */
 function captcha_keypad_settings_form_validate($form, &$form_state) {
-  if ($form_state['values']['element'] != 'hello') {
+/*  if ($form_state['values']['element'] != 'hello') {
     form_set_error('element', t('Please say hello?'));
-  }
+  }*/
 }
 
 /**
