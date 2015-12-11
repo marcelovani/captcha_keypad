@@ -50,36 +50,43 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
 
   $forms = array('user_login'); //@todo use variable_get
 
-  if (in_array($form_id, $forms)) {
-    $code_size = variable_get('captcha_keypad_code_size', 4);
-
-    $form['captcha_keypad'] = array(
-      '#title' => t('Security'),
-      '#type' => 'fieldset',
-    );
-
-    $form['captcha_keypad']['captcha_keypad_input'] = array(
-      '#title' => t('Enter code'),
-      '#type' => 'textfield',
-      '#size' => $code_size,
-      '#disabled' => TRUE,
-    );
-
-    $keypad = '<span class="captcha-keypad"><span class="inner">';
-    for ($n=1; $n<=9; $n++) {
-      $keypad .= '<span>' . $n . '</span>';
-    }
-    $keypad .= '</span></span>';
-    $form['captcha_keypad']['keypad'] = array(
-      //'#theme' => 'aaa',
-      '#markup' => $keypad,
-    );
-
-    $code = '1234';
-    $form['captcha_keypad']['code'] = array(
-      '#markup' => t('Using the keypad, enter the following code: <strong>:code</strong>', array(':code' => $code)),
-    );
+  if (!in_array($form_id, $forms)) {
+    return;
   }
+
+  $code_size = variable_get('captcha_keypad_code_size', 4);
+  $code = '1234';
+
+  $form['captcha_keypad'] = array(
+    '#title' => t('Security'),
+    '#type' => 'fieldset',
+  );
+
+  $form['captcha_keypad']['captcha_keypad_input'] = array(
+    '#title' => t('Enter code'),
+    '#type' => 'textfield',
+    '#size' => $code_size,
+    '#disabled' => TRUE,
+  );
+
+  $form['captcha_keypad']['captcha_keypad_hidden'] = array(
+    '#type' => 'hidden',
+    '#value' => $code,
+  );
+
+  $keypad = '<span class="captcha-keypad"><span class="inner">';
+  for ($n=1; $n<=9; $n++) {
+    $keypad .= '<span>' . $n . '</span>';
+  }
+  $keypad .= '</span></span>';
+  $form['captcha_keypad']['keypad'] = array(
+    //'#theme' => 'aaa',
+    '#markup' => $keypad,
+  );
+
+  $form['captcha_keypad']['code'] = array(
+    '#markup' => t('Using the keypad, enter the following code: <strong>:code</strong>', array(':code' => $code)),
+  );
 
   drupal_add_js(drupal_get_path('module', 'captcha_keypad') . '/captcha_keypad.js');
   drupal_add_css(drupal_get_path('module', 'captcha_keypad') . '/captcha_keypad.css');
