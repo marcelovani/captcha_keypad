@@ -77,8 +77,10 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
   );
 
   $keypad = '';
-  for ($n = 1; $n <= 9; $n++) {
-    $keypad .= '<span>' . $n . '</span>';
+  $keys = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
+  shuffle($keys);
+  for ($n = 0; $n <= 8; $n++) {
+    $keypad .= '<span>' . $keys[$n] . '</span>';
   }
   $form['captcha_keypad']['keypad'] = array(
     '#prefix' => '<span class="captcha-keypad"><span class="inner">',
