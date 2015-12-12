@@ -49,8 +49,6 @@ function captcha_keypad_permission() {
  * Implements hook_form_alter().
  */
 function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
-  var_dump($form_id);
-
   $forms = array('user_login', 'article_node_form', 'comment_node_article_form'); //@todo use variable_get
 
   if (!in_array($form_id, $forms)) {
@@ -58,7 +56,7 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
   }
 
   $digits = variable_get('captcha_keypad_code_size', 4);
-  $code = _captcha_keypad_get_code($digits);
+  $code = _captcha_keypad_get_code($form['#build_id'], $digits);
 
   $form['captcha_keypad'] = array(
     '#title' => t('Security'),
@@ -69,11 +67,6 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
     '#title' => t('Enter code'),
     '#type' => 'textfield',
     '#size' => $digits,
-  );
-
-  $form['captcha_keypad']['captcha_keypad_hidden'] = array(
-    '#type' => 'hidden',
-    '#value' => $code,
   );
 
   $keypad = '';
@@ -94,17 +87,19 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
     '#suffix' => '</span>',
   );
 
-  $form['#validate'][] = 'captcha_keypad_form_validate';
+  array_unshift($form['#validate'], 'captcha_keypad_form_validate');
 
-  _captcha_keypad_add_js_css();
+  _captcha_keypad_add_js_css($form);
 }
 
 /**
  * Callback function for form submit.
  */
 function captcha_keypad_form_validate(&$form, &$form_state) {
-  if ($form_state['values']['captcha_keypad_input'] != $form_state['values']['captcha_keypad_hidden']) {
-    _captcha_keypad_add_js_css();
+  $digits = variable_get('captcha_keypad_code_size', 4);
+  $code = _captcha_keypad_get_code($form['#build_id'], $digits);
+  if ($form_state['values']['captcha_keypad_input'] != $code) {
+    _captcha_keypad_add_js_css($form);
     form_set_error('captcha_keypad_input', t('Invalid security code.'));
   }
 }
@@ -112,16 +107,16 @@ function captcha_keypad_form_validate(&$form, &$form_state) {
 /**
  * Helper to generate the code.
  */
-function _captcha_keypad_get_code($digits) {
-  $code = rand(pow(10, $digits - 1), pow(10, $digits) - 1);
-  $code = str_replace('0', '1', $code . '');
+function _captcha_keypad_get_code($string, $digits) {
+  preg_match_all("/([1-9])/", sha1($string), $matches);
+  $code = implode('', array_slice($matches[0], 0, $digits));
   return $code;
 }
 
 /**
  * Helper to add css and javascript.
  */
-function _captcha_keypad_add_js_css() {
-  drupal_add_js(drupal_get_path('module', 'captcha_keypad') . '/captcha_keypad.js');
-  drupal_add_css(drupal_get_path('module', 'captcha_keypad') . '/captcha_keypad.css');
+function _captcha_keypad_add_js_css(&$form) {
+  $form['#attached']['js'][] = drupal_get_path('module', 'captcha_keypad') . '/captcha_keypad.js';
+  $form['#attached']['css'][] = drupal_get_path('module', 'captcha_keypad') . '/captcha_keypad.css';
 }
