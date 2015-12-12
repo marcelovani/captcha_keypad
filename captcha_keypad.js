@@ -1,8 +1,14 @@
 (function ($) {
+    var once = 0;
     Drupal.behaviors.capcha_keypad = {
 
         attach: function (data, settings) {
             jQuery(document).ready(function () {
+                if (once != 0) {
+                    return;
+                }
+                once = 1;
+
                 jQuery('#edit-captcha-keypad-input').keyup(function() {
                     jQuery('#edit-captcha-keypad-input').val('');
                     jQuery('#edit-captcha-keypad .message').css('color', 'red');
