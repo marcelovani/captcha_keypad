@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file captcha_keypad.module
  * Captcha keypad module.

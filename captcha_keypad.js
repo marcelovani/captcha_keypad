@@ -1,42 +1,40 @@
 (function ($) {
+  Drupal.behaviors.capcha_keypad = {
+    attach: function (data, settings) {
+      jQuery(document).ready(function () {
+        jQuery('.captcha-keypad-input').keyup(function () {
+          var wrapper = jQuery(this).parent().parent().parent().parent();
+          var textfield = wrapper.find('.captcha-keypad-input');
+          var message = wrapper.find('.message');
+          textfield.val('');
+          message.css('color', 'red');
+          message.html(Drupal.t('Use keypad ->'));
+        });
 
-    Drupal.behaviors.capcha_keypad = {
+        jQuery('.form-item-captcha-keypad-input').append(
+          '<span class="clear">' +
+          Drupal.t('Clear') +
+          '</span><br/>' +
+          '<span class="message"></span>'
+        );
 
-        attach: function (data, settings) {
-            jQuery(document).ready(function () {
-                jQuery('.captcha-keypad-input').keyup(function () {
-                    var wrapper = jQuery(this).parent().parent().parent().parent();
-                    var textfield = wrapper.find('.captcha-keypad-input');
-                    var message = wrapper.find('.message');
-                    textfield.val('');
-                    message.css('color', 'red');
-                    message.html(Drupal.t('Use keypad ->'));
-                });
+        jQuery('.form-item-captcha-keypad-input .clear').click(function () {
+          var wrapper = jQuery(this).parent().parent().parent().parent();
+          var textfield = wrapper.find('.captcha-keypad-input');
+          var message = wrapper.find('.message');
+          textfield.val('');
+          message.html('');
+        });
 
-                jQuery('.form-item-captcha-keypad-input').append(
-                    '<span class="clear">' +
-                    Drupal.t('Clear') +
-                    '</span><br/>' +
-                    '<span class="message"></span>'
-                );
-
-                jQuery('.form-item-captcha-keypad-input .clear').click(function () {
-                    var wrapper = jQuery(this).parent().parent().parent().parent();
-                    var textfield = wrapper.find('.captcha-keypad-input');
-                    var message = wrapper.find('.message');
-                    textfield.val('');
-                    message.html('');
-                });
-
-                jQuery('.captcha-keypad .inner span').click(function () {
-                    var wrapper = jQuery(this).parent().parent().parent().parent();
-                    var textfield = wrapper.find('.captcha-keypad-input');
-                    var message = wrapper.find('.message');
-                    var value = textfield.val();
-                    textfield.val(value + jQuery(this).text());
-                    message.html('');
-                });
-            })
-        }
-    };
+        jQuery('.captcha-keypad .inner span').click(function () {
+          var wrapper = jQuery(this).parent().parent().parent().parent();
+          var textfield = wrapper.find('.captcha-keypad-input');
+          var message = wrapper.find('.message');
+          var value = textfield.val();
+          textfield.val(value + jQuery(this).text());
+          message.html('');
+        });
+      })
+    }
+  };
 })(jQuery);
