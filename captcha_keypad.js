@@ -3,6 +3,8 @@
     attach: function (data, settings) {
       jQuery(document).ready(function () {
 
+          jQuery('.captcha-keypad-keypad-used').val('');
+
           jQuery('.captcha-keypad-input').val('').keyup(function () {
           var wrapper = jQuery(this).parent().parent().parent().parent();
           var textfield = wrapper.find('.captcha-keypad-input');
@@ -30,7 +32,7 @@
         jQuery('.captcha-keypad .inner span').click(function () {
           var wrapper = jQuery(this).parent().parent().parent().parent();
           var textfield = wrapper.find('.captcha-keypad-input');
-          var keypadused = wrapper.find('.captcha-keypad-used');
+          var keypadused = wrapper.find('.captcha-keypad-keypad-used');
           var message = wrapper.find('.message');
           var value = textfield.val();
           textfield.val(value + jQuery(this).text());

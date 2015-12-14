@@ -84,7 +84,7 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
   $form['captcha_keypad']['captcha_keypad_keypad_used'] = array(
     '#type' => 'hidden',
     '#size' => 1,
-    '#attributes' => array('class' => array('captcha-keypad-used')),
+    '#attributes' => array('class' => array('captcha-keypad-keypad-used')),
     '#default_value' => '',
   );
 
