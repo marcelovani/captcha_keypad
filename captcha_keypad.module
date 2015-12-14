@@ -55,13 +55,6 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
 
   $digits = variable_get('captcha_keypad_code_size', 4);
 
-  if (!isset($form_state['input']['captcha_keypad_hidden'])) {
-    $code = _captcha_keypad_get_code($digits);
-  }
-  else {
-    $code = $form_state['input']['captcha_keypad_hidden'];
-  }
-
   $form['captcha_keypad'] = array(
     '#title' => t('Security'),
     '#type' => 'fieldset',
@@ -76,10 +69,23 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
     '#size' => $digits,
   );
 
+  if (!isset($form_state['input']['captcha_keypad_hidden'])) {
+    $code = _captcha_keypad_get_code($digits);
+  }
+  else {
+    $code = $form_state['input']['captcha_keypad_hidden'];
+  }
   $form['captcha_keypad']['captcha_keypad_hidden'] = array(
     '#type' => 'hidden',
     '#size' => 1,
     '#value' => $code,
+  );
+
+  $form['captcha_keypad']['captcha_keypad_keypad_used'] = array(
+    '#type' => 'hidden',
+    '#size' => 1,
+    '#attributes' => array('class' => array('captcha-keypad-used')),
+    '#default_value' => '',
   );
 
   $keypad = '';
@@ -111,7 +117,9 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
  * Callback function for form submit.
  */
 function captcha_keypad_form_validate(&$form, &$form_state) {
-  if ($form_state['values']['captcha_keypad_input'] != $form_state['values']['captcha_keypad_hidden']) {
+  if ($form_state['values']['captcha_keypad_input'] != $form_state['values']['captcha_keypad_hidden'] ||
+    $form_state['values']['captcha_keypad_keypad_used'] != 'Yes'
+  ) {
     _captcha_keypad_add_js_css($form);
     form_set_error('captcha_keypad_input', t('Invalid security code.'));
   }

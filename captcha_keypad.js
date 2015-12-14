@@ -2,7 +2,8 @@
   Drupal.behaviors.capcha_keypad = {
     attach: function (data, settings) {
       jQuery(document).ready(function () {
-        jQuery('.captcha-keypad-input').keyup(function () {
+
+          jQuery('.captcha-keypad-input').val('').keyup(function () {
           var wrapper = jQuery(this).parent().parent().parent().parent();
           var textfield = wrapper.find('.captcha-keypad-input');
           var message = wrapper.find('.message');
@@ -29,9 +30,11 @@
         jQuery('.captcha-keypad .inner span').click(function () {
           var wrapper = jQuery(this).parent().parent().parent().parent();
           var textfield = wrapper.find('.captcha-keypad-input');
+          var keypadused = wrapper.find('.captcha-keypad-used');
           var message = wrapper.find('.message');
           var value = textfield.val();
           textfield.val(value + jQuery(this).text());
+          keypadused.val('Yes');
           message.html('');
         });
       })
