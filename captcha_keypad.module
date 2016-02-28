@@ -10,26 +10,9 @@
 function captcha_keypad_help($path, $arg) {
   switch ($path) {
     case 'admin/config/captcha_keypad':
-      return '<p>' . t('todo.') . '</p>';
+      //@todo Write help text.
+      return '<p>' . t('') . '</p>';
   }
-}
-
-/**
- * Implements hook_menu().
- */
-function captcha_keypad_menu() {
-  $items = array();
-
-  $items['admin/config/system/captcha_keypad'] = array(
-    'title' => 'Captcha Keypad',
-    'description' => 'Configure Captcha Keypad.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('captcha_keypad_settings_form'),
-    'access arguments' => array('administer captcha keypad'),
-    'file' => 'captcha_keypad.admin.inc',
-  );
-
-  return $items;
 }
 
 /**
@@ -45,15 +28,15 @@ function captcha_keypad_permission() {
 }
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_alter() to add the keypad to selected forms.
  */
-function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
-  $form_ids = variable_get('captcha_keypad_forms', array());
+function captcha_keypad_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $form_ids = \Drupal::config('captcha_keypad.settings')->get('captcha_keypad_forms');
   if (!in_array($form_id, array_filter($form_ids))) {
     return;
   }
 
-  $digits = variable_get('captcha_keypad_code_size', 4);
+  $digits = \Drupal::config('captcha_keypad.settings')->get('captcha_keypad_code_size');
 
   $form['captcha_keypad'] = array(
     '#title' => t('Security'),
@@ -69,12 +52,13 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
     '#size' => $digits,
   );
 
-  if (!isset($form_state['input']['captcha_keypad_hidden'])) {
+  if (!isset($form_state->input['captcha_keypad_hidden'])) {
     $code = _captcha_keypad_get_code($digits);
   }
   else {
-    $code = $form_state['input']['captcha_keypad_hidden'];
+    $code = $form_state->input['captcha_keypad_hidden'];
   }
+
   $form['captcha_keypad']['captcha_keypad_hidden'] = array(
     '#type' => 'hidden',
     '#size' => 1,
@@ -90,7 +74,7 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
 
   $keypad = '';
   $keys = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
-  if (variable_get('captcha_keypad_shuffle_keypad', TRUE)) {
+  if (\Drupal::config('captcha_keypad.settings')->get('captcha_keypad_shuffle_keypad')) {
     shuffle($keys);
   }
   for ($n = 0; $n <= 8; $n++) {
@@ -116,12 +100,13 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
 /**
  * Callback function for form submit.
  */
-function captcha_keypad_form_validate(&$form, &$form_state) {
-  if ($form_state['values']['captcha_keypad_input'] != $form_state['values']['captcha_keypad_hidden'] ||
-    $form_state['values']['captcha_keypad_keypad_used'] != 'Yes'
+function captcha_keypad_form_validate(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $input = $form_state->getUserInput();
+  if ($input['captcha_keypad_input'] != $input['captcha_keypad_hidden'] ||
+    $input['captcha_keypad_keypad_used'] != 'Yes'
   ) {
     _captcha_keypad_add_js_css($form);
-    form_set_error('captcha_keypad_input', t('Invalid security code.'));
+    $form_state->setErrorByName('captcha_keypad_input', t("Invalid security code."));
   }
 }
 
@@ -138,6 +123,5 @@ function _captcha_keypad_get_code($digits) {
  * Helper to add css and javascript.
  */
 function _captcha_keypad_add_js_css(&$form) {
-  $form['#attached']['js'][] = drupal_get_path('module', 'captcha_keypad') . '/captcha_keypad.js';
-  $form['#attached']['css'][] = drupal_get_path('module', 'captcha_keypad') . '/captcha_keypad.css';
+  $form['#attached']['library'][] = 'captcha_keypad/captcha_keypad';
 }
