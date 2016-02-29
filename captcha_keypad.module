@@ -104,7 +104,7 @@ function captcha_keypad_form_alter(&$form, &$form_state, $form_id) {
 
   $form['captcha_keypad']['code'] = array(
     '#prefix' => '<span class="sequence">',
-    '#markup' => t('Using the mouse, click this sequence: <strong>:code</strong>', array(':code' => $code)),
+    '#markup' => t('Click/tap this sequence: <strong>:code</strong>', array(':code' => $code)),
     '#suffix' => '</span>',
   );
 
