@@ -39,6 +39,14 @@ function captcha_keypad_settings_form($form, &$form_state) {
     $form_ids[] = 'user_login';
     $form_ids[] = 'user_login_block';
   }
+  if (module_exists('webform')) {
+    $query = db_select('webform', 'w');
+    $query->fields('w', ['nid']);
+    $result = $query->execute();
+    while ($row = $result->fetchObject()) {
+      $form_ids[] = 'webform_client_form_' . reset($row);
+    }
+  }
   foreach (node_type_get_names() as $type => $name) {
     $form_ids[] = 'comment_node_' . $type . '_form';
   }

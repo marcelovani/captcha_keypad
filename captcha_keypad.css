@@ -16,6 +16,7 @@
   display: inline-table;
   margin: 2px 2px;
   padding: 2px 6px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .captcha-keypad-wrapper .fieldset-wrapper .captcha-keypad .inner span:hover,
