@@ -24,3 +24,10 @@ _______________
 Captcha
 Botcha
 Spamicide
+
+Supported modules
+-----------------
+Contact
+Forum
+User
+Webform
