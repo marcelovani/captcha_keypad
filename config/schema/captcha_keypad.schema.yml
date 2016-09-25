@@ -1,5 +1,5 @@
 captcha_keypad.settings:
-  type: mapping
+  type: config_object
   label: Settings
   mapping:
     captcha_keypad_code_size:
