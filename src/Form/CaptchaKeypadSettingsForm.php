@@ -74,11 +74,6 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
       }
     }
 
-    // Forum.
-    if (\Drupal::moduleHandler()->moduleExists('forum')) {
-      $form_ids['comment_comment_forum_form'] = t('Forum: comment');
-    }
-
     // User.
     if (\Drupal::moduleHandler()->moduleExists('user')) {
       $form_ids['user_register_form'] = t('User: register');
@@ -93,6 +88,11 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
       foreach ($comment_types as $id => $item) {
         $form_ids['comment_' . $id . '_form'] = t('Comment: :item', array(':item' => $item->getDescription()));
       }
+    }
+
+    // Forum.
+    if (\Drupal::moduleHandler()->moduleExists('forum')) {
+      $form_ids['comment_comment_forum_form'] = t('Forum: comment');
     }
 
     $form['captcha_keypad_forms'] = [
