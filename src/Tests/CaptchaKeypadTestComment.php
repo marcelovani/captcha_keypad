@@ -15,7 +15,7 @@ class CaptchaKeypadTestComment extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array('node', 'comment', 'captcha_keypad');
+  public static $modules = array('node', 'field_ui', 'comment', 'captcha_keypad');
 
   /**
    * A user with the 'Administer Captcha keypad' permission.
@@ -43,12 +43,13 @@ class CaptchaKeypadTestComment extends WebTestBase {
       'name' => 'Article',
     ));
 
+    // Create comment and attach to content type.
+
+    // Enable Captcha keypad on contact form.
     $this->drupalGet('admin/config/system/captcha_keypad');
-    //$edit['captcha_keypad_forms[comment_comment_form]'] = 1; @todo need to enable comment on content type first.
 
-    $element = $this->xpath('//input[@type="checkbox" and @name="captcha_keypad_forms[comment_comment_forum_form]" and @checked="checked"]');
-    $this->assertTrue(count($element) === 1, 'Forum form is checked.');
+    // Create content.
 
-    $this->assertRaw('Need to implement');
+    // Test Captcha Keypad.
   }
 }
