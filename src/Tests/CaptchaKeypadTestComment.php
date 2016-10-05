@@ -15,7 +15,7 @@ class CaptchaKeypadTestComment extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array('comment', 'captcha_keypad');
+  public static $modules = array('node', 'comment', 'captcha_keypad');
 
   /**
    * A user with the 'Administer Captcha keypad' permission.

@@ -8,3 +8,5 @@ captcha_keypad.settings:
       type: boolean
     captcha_keypad_forms:
       type: sequence
+      sequence:
+        - type: string
