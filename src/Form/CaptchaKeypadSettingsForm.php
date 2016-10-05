@@ -47,6 +47,8 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
   }
 
   public function buildForm(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
+    $form_ids = [];
+
     $form['captcha_keypad_code_size'] = [
       '#type' => 'textfield',
       '#title' => t('Code size'),
@@ -64,23 +66,33 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
       '#default_value' => \Drupal::config('captcha_keypad.settings')->get('captcha_keypad_shuffle_keypad'),
     ];
 
-    $form_ids = [];
+    // Contact.
     if (\Drupal::moduleHandler()->moduleExists('contact')) {
-      $form_ids['contact_message_feedback_form'] = t('Site: contact');
-      $form_ids['contact_message_personal_form'] = t('User: contact');
+      $ids = \Drupal::service('entity.query')->get('contact_form')->execute();
+      foreach ($ids as $id) {
+        $form_ids['contact_message_' . $id . '_form'] = t('Contact: :id', array(':id' => $id));
+      }
     }
+
+    // Forum.
     if (\Drupal::moduleHandler()->moduleExists('forum')) {
       $form_ids['comment_comment_forum_form'] = t('Forum: comment');
     }
+
+    // User.
     if (\Drupal::moduleHandler()->moduleExists('user')) {
       $form_ids['user_register_form'] = t('User: register');
       $form_ids['user_pass'] = t('User: Forgot password');
       $form_ids['user_login_form'] = t('User: Login');
       $form_ids['user_login_block'] = t('User: Login block');
     }
-    $comment_types = \Drupal\comment\Entity\CommentType::loadMultiple();
-    foreach ($comment_types as $id => $item) {
-      $form_ids['comment_' . $id . '_form'] = t('Comment: :item', array(':item' => $item->getDescription()));
+
+    // Comment.
+    if (\Drupal::moduleHandler()->moduleExists('comment')) {
+      $comment_types = \Drupal\comment\Entity\CommentType::loadMultiple();
+      foreach ($comment_types as $id => $item) {
+        $form_ids['comment_' . $id . '_form'] = t('Comment: :item', array(':item' => $item->getDescription()));
+      }
     }
 
     $form['captcha_keypad_forms'] = [
