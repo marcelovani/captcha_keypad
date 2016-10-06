@@ -24,24 +24,6 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    $config = $this->config('captcha_keypad.settings');
-
-    foreach (Element::children($form) as $variable) {
-      $config->set($variable, $form_state->getValue($form[$variable]['#parents']));
-    }
-    $config->save();
-
-    if (method_exists($this, '_submitForm')) {
-      $this->_submitForm($form, $form_state);
-    }
-
-    parent::submitForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function getEditableConfigNames() {
     return ['captcha_keypad.settings'];
   }
@@ -55,7 +37,7 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
       '#description' => t('Size of the code.'),
       '#size' => 2,
       '#maxlength' => 2,
-      '#default_value' => \Drupal::config('captcha_keypad.settings')->get('captcha_keypad_code_size'),
+      '#default_value' => $this->config('captcha_keypad.settings')->get('captcha_keypad_code_size'),
       '#required' => TRUE,
     ];
 
@@ -63,7 +45,7 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => t('Shuffle keypad'),
       '#description' => t('Selecting this option will make the keys appear in random order.'),
-      '#default_value' => \Drupal::config('captcha_keypad.settings')->get('captcha_keypad_shuffle_keypad'),
+      '#default_value' => $this->config('captcha_keypad.settings')->get('captcha_keypad_shuffle_keypad'),
     ];
 
     // Contact.
@@ -99,7 +81,7 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
       '#type' => 'checkboxes',
       '#title' => t('Forms'),
       '#options' => $form_ids,
-      '#default_value' => \Drupal::config('captcha_keypad.settings')->get('captcha_keypad_forms'),
+      '#default_value' => $this->config('captcha_keypad.settings')->get('captcha_keypad_forms'),
       '#description' => t('Select which forms to add captcha keypad.'),
     ];
 
@@ -107,13 +89,19 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
   }
 
   public function validateForm(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
-    \Drupal::configFactory()->getEditable('captcha_keypad.settings')->set('captcha_keypad_forms', $form_state->getValue([
-      'captcha_keypad_forms'
-      ]))->save();
-  }
-
-  public function _submitForm(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
 
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $config = $this->config('captcha_keypad.settings');
+    $config->set('captcha_keypad_code_size', $form_state->getValue('captcha_keypad_code_size'));
+    $config->set('captcha_keypad_shuffle_keypad', $form_state->getValue('captcha_keypad_shuffle_keypad'));
+    $config->set('captcha_keypad_forms', $form_state->getValue('captcha_keypad_forms'));
+    $config->save();
+
+    parent::submitForm($form, $form_state);
+  }
 }
