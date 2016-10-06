@@ -50,7 +50,6 @@ class CaptchaKeypadTestUser extends WebTestBase {
     $edit['captcha_keypad_forms[user_register_form]'] = 1;
     $edit['captcha_keypad_forms[user_login_form]'] = 1;
     $edit['captcha_keypad_forms[user_pass]'] = 1;
-    //@todo fix schema validation warnings.
     $this->drupalPostForm('admin/config/system/captcha_keypad', $edit, t('Save configuration'));
 
     $this->drupalGet('admin/config/system/captcha_keypad');
