@@ -2,14 +2,12 @@
 
 class CaptchaKeypadContactTest extends DrupalWebTestCase {
   protected $profile = 'testing';
-
   /**
    * Modules to enable.
    *
    * @var array
    */
-  public $modules = ['contact', 'captcha_keypad'];
-
+  public $modules = array('contact', 'captcha_keypad');
   /**
    * A user with the 'Administer Captcha keypad' permission.
    *
@@ -37,14 +35,12 @@ class CaptchaKeypadContactTest extends DrupalWebTestCase {
   public function setUp() {
     parent::setUp($this->modules);
 
-    $this->adminUser = $this->drupalCreateUser(
-      [
-        'administer captcha keypad',
-        'administer contact forms',
-        'access site-wide contact form',
-        'access user contact forms',
-      ], 'Captcha Keypad Admin', TRUE
-    );
+    $this->adminUser = $this->drupalCreateUser(array(
+      'administer captcha keypad',
+      'administer contact forms',
+      'access site-wide contact form',
+      'access user contact forms',
+    ), 'Captcha Keypad Admin', TRUE);
   }
 
   /**
@@ -54,13 +50,13 @@ class CaptchaKeypadContactTest extends DrupalWebTestCase {
     $this->drupalLogin($this->adminUser);
 
     // Add new contact form.
-    $edit = [];
+    $edit = array();
     $edit['category'] = t('Feedback');
     $edit['recipients'] = 'email@example.com';
     $this->drupalPost('admin/structure/contact/add', $edit, t('Save'));
 
     // Turn on Captcha keypad for the contact form.
-    $edit = [];
+    $edit = array();
     $edit['captcha_keypad_code_size'] = 99;
     $edit['captcha_keypad_forms[contact_personal_form]'] = 1;
     $edit['captcha_keypad_forms[contact_site_form]'] = 1;
@@ -77,14 +73,14 @@ class CaptchaKeypadContactTest extends DrupalWebTestCase {
     $this->assertTrue(count($element) === 1, 'Feedback form is checked.');
 
     // Submit form without captcha code.
-    $edit = [];
+    $edit = array();
     $edit['subject'] = 'Foo';
     $edit['message'] = 'Bar';
     $this->drupalPost('contact/feedback', $edit, t('Send message'));
     $this->assertText('Invalid security code.');
 
     // Submit the right code.
-    $edit = [];
+    $edit = array();
     $edit['subject'] = 'Foo';
     $edit['message'] = 'Bar';
     $edit['captcha_keypad_input'] = 'testing';
@@ -92,5 +88,4 @@ class CaptchaKeypadContactTest extends DrupalWebTestCase {
     $this->drupalPost('contact/feedback', $edit, t('Send message'));
     $this->assertNoText('Invalid security code.');
   }
-
 }

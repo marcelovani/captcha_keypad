@@ -2,14 +2,12 @@
 
 class CaptchaKeypadCommentsTest extends DrupalWebTestCase {
   protected $profile = 'testing';
-
   /**
    * Modules to enable.
    *
    * @var array
    */
-  public $modules = ['node', 'field_ui', 'comment', 'captcha_keypad'];
-
+  public $modules = array('node', 'field_ui', 'comment', 'captcha_keypad');
   /**
    * A user with the 'Administer Captcha keypad' permission.
    *
@@ -37,14 +35,12 @@ class CaptchaKeypadCommentsTest extends DrupalWebTestCase {
   public function setUp() {
     parent::setUp($this->modules);
 
-    $this->adminUser = $this->drupalCreateUser(
-      [
-        'administer captcha keypad',
-        'administer comments',
-        'access comments',
-        'post comments',
-      ], 'Captcha Keypad Admin', TRUE
-    );
+    $this->adminUser = $this->drupalCreateUser(array(
+      'administer captcha keypad',
+      'administer comments',
+      'access comments',
+      'post comments',
+    ), 'Captcha Keypad Admin', TRUE);
   }
 
   /**
@@ -54,10 +50,10 @@ class CaptchaKeypadCommentsTest extends DrupalWebTestCase {
     $this->drupalLogin($this->adminUser);
 
     // Create article node type.
-    $this->drupalCreateContentType([
+    $this->drupalCreateContentType(array(
       'type' => 'article',
       'name' => 'Article',
-    ]);
+    ));
 
     // Enable Captcha keypad on comment form.
     $this->drupalGet('admin/config/system/captcha_keypad');

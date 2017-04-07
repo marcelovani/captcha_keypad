@@ -52,10 +52,10 @@ class CaptchaKeypadUserTest extends DrupalWebTestCase {
   public function testLinkToConfig() {
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/modules');
-    $link = $this->xpath('//a[contains(@href, :href) and contains(@id, :id)]', [
+    $link = $this->xpath('//a[contains(@href, :href) and contains(@id, :id)]', array(
       ':href' => '/admin/config/system/captcha_keypad',
       ':id' => 'edit-modules-spam-control-captcha-keypad-links-configure',
-    ]);
+    ));
     $this->assertTrue(count($link) === 1, 'Link to config is present');
   }
 
@@ -65,7 +65,7 @@ class CaptchaKeypadUserTest extends DrupalWebTestCase {
   public function testUserForms() {
     $this->drupalLogin($this->adminUser);
 
-    $edit = [];
+    $edit = array();
     $edit['captcha_keypad_code_size'] = 99;
     $edit['captcha_keypad_shuffle_keypad'] = FALSE;
     $edit['captcha_keypad_forms[user_register_form]'] = 1;
@@ -109,7 +109,7 @@ class CaptchaKeypadUserTest extends DrupalWebTestCase {
     $this->assertTrue(count($element) === 1, 'The input text is present.');
 
     // User login form.
-    $edit = [];
+    $edit = array();
     $edit['name'] = $this->adminUser->name;
     $edit['pass'] = $this->adminUser->pass;
     $this->drupalPost('user/login', $edit, t('Log in'));
