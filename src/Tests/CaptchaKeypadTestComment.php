@@ -36,7 +36,7 @@ class CaptchaKeypadTestComment extends WebTestBase {
   }
 
   /**
-   * Test for Contact forms.
+   * Test for Comment forms.
    */
   public function testCaptchaKeypadCommentForm() {
     $this->drupalLogin($this->adminUser);
