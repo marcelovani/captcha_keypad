@@ -20,6 +20,5 @@
         "source": "http://cgit.drupalcode.org/captcha_keypad"
     },
     "license": "GPL-2.0+",
-    "minimum-stability": "dev",
-    "require": { }
+    "minimum-stability": "dev"
 }

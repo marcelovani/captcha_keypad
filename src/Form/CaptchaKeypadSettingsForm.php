@@ -28,7 +28,7 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
     return ['captcha_keypad.settings'];
   }
 
-  public function buildForm(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state) {
     $form_ids = [];
 
     $form['captcha_keypad_code_size'] = [
@@ -66,7 +66,7 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
 
     // Comment.
     if (\Drupal::moduleHandler()->moduleExists('comment')) {
-      $comment_types = \Drupal\comment\Entity\CommentType::loadMultiple();
+      $comment_types = CommentType::loadMultiple();
       foreach ($comment_types as $id => $item) {
         $form_ids['comment_' . $id . '_form'] = t('Comment: :item', array(':item' => $item->getDescription()));
       }
@@ -88,7 +88,7 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
     return parent::buildForm($form, $form_state);
   }
 
-  public function validateForm(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  public function validateForm(array &$form, FormStateInterface $form_state) {
 
   }
 

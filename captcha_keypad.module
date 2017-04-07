@@ -4,6 +4,8 @@
  * Captcha keypad module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 /**
  * Implements hook_help().
  */
@@ -11,8 +13,10 @@ function captcha_keypad_help($path, $arg) {
   switch ($path) {
     case 'admin/config/captcha_keypad':
       //@todo Write help text.
-      return '<p>' . t('') . '</p>';
+      $content = '';
   }
+
+  return $content;
 }
 
 /**
@@ -30,7 +34,7 @@ function captcha_keypad_permission() {
 /**
  * Implements hook_form_alter() to add the keypad to selected forms.
  */
-function captcha_keypad_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function captcha_keypad_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_ids = \Drupal::config('captcha_keypad.settings')->get('captcha_keypad_forms');
   if (!in_array($form_id, array_filter($form_ids))) {
     return;
@@ -103,7 +107,7 @@ function captcha_keypad_form_alter(&$form, \Drupal\Core\Form\FormStateInterface 
 /**
  * Callback function for form submit.
  */
-function captcha_keypad_form_validate(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+function captcha_keypad_form_validate(array &$form, FormStateInterface $form_state) {
   $input = $form_state->getUserInput();
   if (!isset($input['captcha_keypad_hidden'])) {
     return;
