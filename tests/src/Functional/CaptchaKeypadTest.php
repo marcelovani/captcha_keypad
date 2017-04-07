@@ -19,7 +19,7 @@ class CaptchaKeypadTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = array('captcha_keypad', 'node');
+  public static $modules = ['captcha_keypad', 'node'];
 
 
   /**

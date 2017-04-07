@@ -23,11 +23,11 @@ function captcha_keypad_help($path, $arg) {
  * Implements hook_permission().
  */
 function captcha_keypad_permission() {
-  $permissions = array();
+  $permissions = [];
 
-  $permissions['administer captcha keypad'] = array(
+  $permissions['administer captcha keypad'] = [
     'title' => t('Administer Capcha keypad'),
-  );
+  ];
   return $permissions;
 }
 
@@ -42,19 +42,19 @@ function captcha_keypad_form_alter(&$form, FormStateInterface $form_state, $form
 
   $digits = \Drupal::config('captcha_keypad.settings')->get('captcha_keypad_code_size');
 
-  $form['captcha_keypad'] = array(
+  $form['captcha_keypad'] = [
     '#title' => t('Security'),
     '#type' => 'fieldset',
-    '#attributes' => array('class' => array('captcha-keypad-wrapper')),
+    '#attributes' => ['class' => ['captcha-keypad-wrapper']],
     '#weight' => (isset($form['actions']['#weight']) ? $form['actions']['#weight'] - 1 : 99.5),
-  );
+  ];
 
-  $form['captcha_keypad']['captcha_keypad_input'] = array(
+  $form['captcha_keypad']['captcha_keypad_input'] = [
     '#title' => t('Enter code'),
     '#type' => 'textfield',
-    '#attributes' => array('class' => array('captcha-keypad-input')),
+    '#attributes' => ['class' => ['captcha-keypad-input']],
     '#size' => $digits,
-  );
+  ];
 
   if (!isset($form_state->input['captcha_keypad_hidden'])) {
     $code = _captcha_keypad_get_code($digits);
@@ -63,38 +63,38 @@ function captcha_keypad_form_alter(&$form, FormStateInterface $form_state, $form
     $code = $form_state->input['captcha_keypad_hidden'];
   }
 
-  $form['captcha_keypad']['captcha_keypad_hidden'] = array(
+  $form['captcha_keypad']['captcha_keypad_hidden'] = [
     '#type' => 'hidden',
     '#size' => 1,
     '#value' => $code,
-  );
+  ];
 
-  $form['captcha_keypad']['captcha_keypad_keypad_used'] = array(
+  $form['captcha_keypad']['captcha_keypad_keypad_used'] = [
     '#type' => 'hidden',
     '#size' => 1,
-    '#attributes' => array('class' => array('captcha-keypad-keypad-used')),
+    '#attributes' => ['class' => ['captcha-keypad-keypad-used']],
     '#default_value' => '',
-  );
+  ];
 
   $keypad = '';
-  $keys = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
+  $keys = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   if (\Drupal::config('captcha_keypad.settings')->get('captcha_keypad_shuffle_keypad')) {
     shuffle($keys);
   }
   for ($n = 0; $n <= 8; $n++) {
     $keypad .= '<span>' . $keys[$n] . '</span>';
   }
-  $form['captcha_keypad']['keypad'] = array(
+  $form['captcha_keypad']['keypad'] = [
     '#prefix' => '<span class="captcha-keypad"><span class="inner">',
     '#markup' => $keypad,
     '#suffix' => '</span></span>',
-  );
+  ];
 
-  $form['captcha_keypad']['code'] = array(
+  $form['captcha_keypad']['code'] = [
     '#prefix' => '<span class="sequence">',
-    '#markup' => t('Click/tap this sequence: <strong>:code</strong>', array(':code' => $code)),
+    '#markup' => t('Click/tap this sequence: <strong>:code</strong>', [':code' => $code]),
     '#suffix' => '</span>',
-  );
+  ];
 
   array_unshift($form['#validate'], 'captcha_keypad_form_validate');
 
