@@ -15,7 +15,7 @@ class CaptchaKeypadTestForum extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array('forum', 'captcha_keypad');
+  public static $modules = ['forum', 'captcha_keypad'];
 
   /**
    * A user with the 'Administer Captcha keypad' permission.
@@ -28,7 +28,7 @@ class CaptchaKeypadTestForum extends WebTestBase {
     parent::setUp();
 
     // Create admin user.
-    $this->adminUser = $this->drupalCreateUser(array('administer captcha keypad'), 'Captcha Keypad Admin', TRUE);
+    $this->adminUser = $this->drupalCreateUser(['administer captcha keypad'], 'Captcha Keypad Admin', TRUE);
   }
 
   /**
@@ -38,7 +38,7 @@ class CaptchaKeypadTestForum extends WebTestBase {
     $this->drupalLogin($this->adminUser);
 
     // Turn on Captcha keypad for the forum form.
-    $edit = array();
+    $edit = [];
     $edit['captcha_keypad_code_size'] = 99;
     $edit['captcha_keypad_forms[comment_comment_forum_form]'] = 1;
     $this->drupalPostForm('admin/config/system/captcha_keypad', $edit, t('Save configuration'));
@@ -53,19 +53,19 @@ class CaptchaKeypadTestForum extends WebTestBase {
     $this->drupalGet('forum');
 
     // Create new forum topic.
-    $edit = array();
+    $edit = [];
     $edit['title[0][value]'] = 'Foo';
-    $this->drupalPostForm('node/add/forum', $edit, t('Save and publish'), array('query' => array('forum_id' => '1')));
+    $this->drupalPostForm('node/add/forum', $edit, t('Save and publish'), ['query' => ['forum_id' => '1']]);
     $this->assertText('Forum topic Foo has been created.');
 
     // Submit form without captcha code.
-    $edit = array();
+    $edit = [];
     $edit['comment_body[0][value]'] = 'Foo';
     $this->drupalPostForm($this->getUrl(), $edit, t('Save'));
     $this->assertText('Invalid security code.');
 
     // Submit form with captcha code.
-    $edit = array();
+    $edit = [];
     $edit['comment_body[0][value]'] = 'Foo';
     $edit['captcha_keypad_input'] = 'testing';
     $edit['captcha_keypad_keypad_used'] = 'Yes';

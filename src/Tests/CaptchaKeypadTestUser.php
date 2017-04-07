@@ -3,6 +3,7 @@
 namespace Drupal\captcha_keypad\Tests;
 
 use Drupal\simpletest\WebTestBase;
+
 /**
  * Tests Captcha Keypad on User forms.
  *
@@ -15,7 +16,7 @@ class CaptchaKeypadTestUser extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array('contact', 'user', 'captcha_keypad');
+  public static $modules = ['contact', 'user', 'captcha_keypad'];
 
   /**
    * A user with the 'Administer Captcha keypad' permission.
@@ -28,7 +29,7 @@ class CaptchaKeypadTestUser extends WebTestBase {
     parent::setUp();
 
     // Create admin user.
-    $this->adminUser = $this->drupalCreateUser(array('administer captcha keypad'), 'Captcha Keypad Admin', TRUE);
+    $this->adminUser = $this->drupalCreateUser(['administer captcha keypad'], 'Captcha Keypad Admin', TRUE);
   }
 
   function testLinkToConfig() {
@@ -44,7 +45,7 @@ class CaptchaKeypadTestUser extends WebTestBase {
   function testUserForms() {
     $this->drupalLogin($this->adminUser);
 
-    $edit = array();
+    $edit = [];
     $edit['captcha_keypad_code_size'] = 99;
     $edit['captcha_keypad_shuffle_keypad'] = FALSE;
     $edit['captcha_keypad_forms[user_register_form]'] = 1;
@@ -88,7 +89,7 @@ class CaptchaKeypadTestUser extends WebTestBase {
     $this->assertTrue(count($element) === 1, 'The input text is present.');
 
     // User login form.
-    $edit = array();
+    $edit = [];
     $edit['name'] = $this->adminUser->getAccountName();
     $edit['pass'] = $this->adminUser->getPassword();
     $this->drupalPostForm('user/login', $edit, t('Log in'));

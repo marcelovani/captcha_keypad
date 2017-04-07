@@ -15,7 +15,7 @@ class CaptchaKeypadTestComment extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array('node', 'field_ui', 'comment', 'captcha_keypad');
+  public static $modules = ['node', 'field_ui', 'comment', 'captcha_keypad'];
 
   /**
    * A user with the 'Administer Captcha keypad' permission.
@@ -28,7 +28,7 @@ class CaptchaKeypadTestComment extends WebTestBase {
     parent::setUp();
 
     // Create admin user.
-    $this->adminUser = $this->drupalCreateUser(array('administer captcha keypad'), 'Captcha Keypad Admin', TRUE);
+    $this->adminUser = $this->drupalCreateUser(['administer captcha keypad'], 'Captcha Keypad Admin', TRUE);
   }
 
   /**
@@ -38,10 +38,10 @@ class CaptchaKeypadTestComment extends WebTestBase {
     $this->drupalLogin($this->adminUser);
 
     // Create article node type.
-    $this->drupalCreateContentType(array(
+    $this->drupalCreateContentType([
       'type' => 'article',
       'name' => 'Article',
-    ));
+    ]);
 
     // Create comment and attach to content type.
 

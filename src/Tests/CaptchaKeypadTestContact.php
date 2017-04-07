@@ -15,7 +15,7 @@ class CaptchaKeypadTestContact extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array('contact', 'captcha_keypad');
+  public static $modules = ['contact', 'captcha_keypad'];
 
   /**
    * A user with the 'Administer Captcha keypad' permission.
@@ -28,7 +28,7 @@ class CaptchaKeypadTestContact extends WebTestBase {
     parent::setUp();
 
     // Create admin user.
-    $this->adminUser = $this->drupalCreateUser(array('administer captcha keypad'), 'Captcha Keypad Admin', TRUE);
+    $this->adminUser = $this->drupalCreateUser(['administer captcha keypad'], 'Captcha Keypad Admin', TRUE);
   }
 
   /**
@@ -38,14 +38,14 @@ class CaptchaKeypadTestContact extends WebTestBase {
     $this->drupalLogin($this->adminUser);
 
     // Add new contact form.
-    $edit = array();
+    $edit = [];
     $edit['id'] = t('feedback');
     $edit['label'] = t('Feedback');
     $edit['recipients'] = 'email@example.com';
     $this->drupalPostForm('admin/structure/contact/add', $edit, t('Save'));
 
     // Turn on Captcha keypad for the contact form.
-    $edit = array();
+    $edit = [];
     $edit['captcha_keypad_code_size'] = 99;
     $edit['captcha_keypad_forms[contact_message_personal_form]'] = 1;
     $edit['captcha_keypad_forms[contact_message_feedback_form]'] = 1;
@@ -62,14 +62,14 @@ class CaptchaKeypadTestContact extends WebTestBase {
     $this->assertTrue(count($element) === 1, 'Feedback form is checked.');
 
     // Submit form without captcha code.
-    $edit = array();
+    $edit = [];
     $edit['subject[0][value]'] = 'Foo';
     $edit['message[0][value]'] = 'Bar';
     $this->drupalPostForm('contact/feedback', $edit, t('Send message'));
     $this->assertText('Invalid security code.');
 
     // Submit the right code.
-    $edit = array();
+    $edit = [];
     $edit['subject[0][value]'] = 'Foo';
     $edit['message[0][value]'] = 'Bar';
     $edit['captcha_keypad_input'] = 'testing';
