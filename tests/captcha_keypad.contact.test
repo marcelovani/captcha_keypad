@@ -21,6 +21,7 @@ class CaptchaKeypadContactTest extends DrupalWebTestCase {
    * Info.
    *
    * @return array
+   *   The test info
    */
   public static function getInfo() {
     return array(

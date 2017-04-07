@@ -21,6 +21,7 @@ class CaptchaKeypadCommentsTest extends DrupalWebTestCase {
    * Info.
    *
    * @return array
+   *  The test info
    */
   public static function getInfo() {
     return array(
@@ -58,13 +59,11 @@ class CaptchaKeypadCommentsTest extends DrupalWebTestCase {
       'name' => 'Article',
     ]);
 
-    // @todo: Create comment and attach to content type.
-
     // Enable Captcha keypad on comment form.
     $this->drupalGet('admin/config/system/captcha_keypad');
 
+    // @todo: Create comment and attach to content type.
     // @todo: Create content.
-
     // @todo: Test Captcha Keypad.
   }
 }
