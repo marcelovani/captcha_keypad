@@ -35,17 +35,23 @@ class CaptchaKeypadTestUser extends WebTestBase {
     $this->adminUser = $this->drupalCreateUser(['administer captcha keypad'], 'Captcha Keypad Admin', TRUE);
   }
 
-  function testLinkToConfig() {
+  /**
+   * Test link to config.
+   */
+  public function testLinkToConfig() {
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/modules');
     $link = $this->xpath('//a[contains(@href, :href) and contains(@id, :id)]', [
       ':href' => '/admin/config/system/captcha_keypad',
-      ':id' => 'edit-modules-captcha-keypad-links-configure'
+      ':id' => 'edit-modules-captcha-keypad-links-configure',
     ]);
     $this->assertTrue(count($link) === 1, 'Link to config is present');
   }
 
-  function testUserForms() {
+  /**
+   * Test user forms.
+   */
+  public function testUserForms() {
     $this->drupalLogin($this->adminUser);
 
     $edit = [];

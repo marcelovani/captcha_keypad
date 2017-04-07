@@ -38,7 +38,7 @@ class CaptchaKeypadTestComment extends WebTestBase {
   /**
    * Test for Contact forms.
    */
-  function testCaptchaKeypadCommentForm() {
+  public function testCaptchaKeypadCommentForm() {
     $this->drupalLogin($this->adminUser);
 
     // Create article node type.

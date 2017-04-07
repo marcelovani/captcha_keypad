@@ -38,7 +38,7 @@ class CaptchaKeypadTestContact extends WebTestBase {
   /**
    * Test for Contact forms.
    */
-  function testCaptchaKeypadContactForm() {
+  public function testCaptchaKeypadContactForm() {
     $this->drupalLogin($this->adminUser);
 
     // Add new contact form.

@@ -1,8 +1,8 @@
 <?php
 
 /**
+ * @file Module for captcha_keypad.
  * Captcha keypad module.
- * @file captcha_keypad.module
  */
 
 use Drupal\Core\Form\FormStateInterface;

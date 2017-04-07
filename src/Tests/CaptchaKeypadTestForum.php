@@ -38,7 +38,7 @@ class CaptchaKeypadTestForum extends WebTestBase {
   /**
    * Test for Contact forms.
    */
-  function testCaptchaKeypadForumForm() {
+  public function testCaptchaKeypadForumForm() {
     $this->drupalLogin($this->adminUser);
 
     // Turn on Captcha keypad for the forum form.
