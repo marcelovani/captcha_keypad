@@ -39,7 +39,7 @@ function captcha_keypad_permission() {
   $permissions = array();
 
   $permissions['administer captcha keypad'] = array(
-    'title' => t('Administer Capcha keypad'),
+    'title' => t('Administer Captcha keypad'),
   );
   return $permissions;
 }
@@ -129,8 +129,14 @@ function captcha_keypad_form_validate(&$form, &$form_state) {
  * Helper to generate the code.
  */
 function _captcha_keypad_get_code($digits) {
+  // Little trick to allow testing.
+  if ($digits == '99') {
+    return 'testing';
+  }
+
   $code = rand(pow(10, $digits - 1), pow(10, $digits) - 1);
   $code = str_replace('0', '1', $code . '');
+
   return $code;
 }
 
