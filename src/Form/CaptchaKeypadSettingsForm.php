@@ -6,8 +6,42 @@ use Drupal\comment\Entity\CommentType;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CaptchaKeypadSettingsForm extends ConfigFormBase {
+
+  /**
+   * The module manager service.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
+   * Constructs a CaptchaKeypadSettingsForm object.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module manager service.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler) {
+    parent::__construct($config_factory);
+
+    $this->moduleHandler = $module_handler;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('module_handler')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -51,7 +85,7 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
     ];
 
     // Contact.
-    if (\Drupal::moduleHandler()->moduleExists('contact')) {
+    if ($this->moduleHandler->moduleExists('contact')) {
       $ids = \Drupal::service('entity.query')->get('contact_form')->execute();
       foreach ($ids as $id) {
         $form_ids['contact_message_' . $id . '_form'] = $this->t('Contact: :id', [':id' => $id]);
@@ -59,7 +93,7 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
     }
 
     // User.
-    if (\Drupal::moduleHandler()->moduleExists('user')) {
+    if ($this->moduleHandler->moduleExists('user')) {
       $form_ids['user_register_form'] = $this->t('User: register');
       $form_ids['user_pass'] = $this->t('User: Forgot password');
       $form_ids['user_login_form'] = $this->t('User: Login');
@@ -67,7 +101,7 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
     }
 
     // Comment.
-    if (\Drupal::moduleHandler()->moduleExists('comment')) {
+    if ($this->moduleHandler->moduleExists('comment')) {
       $comment_types = CommentType::loadMultiple();
       foreach ($comment_types as $id => $item) {
         $form_ids['comment_' . $id . '_form'] = $this->t('Comment: :item', [':item' => $item->getDescription()]);
@@ -75,7 +109,7 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
     }
 
     // Forum.
-    if (\Drupal::moduleHandler()->moduleExists('forum')) {
+    if ($this->moduleHandler->moduleExists('forum')) {
       $form_ids['comment_comment_forum_form'] = $this->t('Forum: comment');
     }
 
