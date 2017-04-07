@@ -41,6 +41,6 @@
       keypadused.val('Yes');
       message.html('');
     });
-  })
+  });
 
 })(jQuery, Drupal);
