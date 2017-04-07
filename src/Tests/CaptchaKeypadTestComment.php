@@ -49,7 +49,7 @@ class CaptchaKeypadTestComment extends WebTestBase {
 
     // Create comment and attach to content type.
 
-    // Enable Captcha keypad on contact form.
+    // Enable Captcha keypad on comment form.
     $this->drupalGet('admin/config/system/captcha_keypad');
 
     // Create content.
