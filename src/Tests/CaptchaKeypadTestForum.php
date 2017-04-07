@@ -3,6 +3,7 @@
 namespace Drupal\captcha_keypad\Tests;
 
 use Drupal\simpletest\WebTestBase;
+
 /**
  * Tests Captcha Keypad on contact pages.
  *
@@ -24,6 +25,9 @@ class CaptchaKeypadTestForum extends WebTestBase {
    */
   protected $adminUser;
 
+  /**
+   * Setup.
+   */
   protected function setUp() {
     parent::setUp();
 
@@ -72,4 +76,5 @@ class CaptchaKeypadTestForum extends WebTestBase {
     $this->drupalPostForm($this->getUrl(), $edit, t('Save'));
     $this->assertText('Your comment has been posted.');
   }
+
 }

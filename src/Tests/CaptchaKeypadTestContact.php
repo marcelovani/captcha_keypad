@@ -3,6 +3,7 @@
 namespace Drupal\captcha_keypad\Tests;
 
 use Drupal\simpletest\WebTestBase;
+
 /**
  * Tests Captcha Keypad on contact pages.
  *
@@ -24,6 +25,9 @@ class CaptchaKeypadTestContact extends WebTestBase {
    */
   protected $adminUser;
 
+  /**
+   * Setup.
+   */
   protected function setUp() {
     parent::setUp();
 
@@ -77,4 +81,5 @@ class CaptchaKeypadTestContact extends WebTestBase {
     $this->drupalPostForm('contact/feedback', $edit, t('Send message'));
     $this->assertNoText('Invalid security code.');
   }
+
 }

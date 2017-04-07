@@ -3,6 +3,7 @@
 namespace Drupal\captcha_keypad\Tests;
 
 use Drupal\simpletest\WebTestBase;
+
 /**
  * Tests Captcha Keypad on comment forms.
  *
@@ -24,6 +25,9 @@ class CaptchaKeypadTestComment extends WebTestBase {
    */
   protected $adminUser;
 
+  /**
+   * Setup.
+   */
   protected function setUp() {
     parent::setUp();
 

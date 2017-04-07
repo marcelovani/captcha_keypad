@@ -25,6 +25,9 @@ class CaptchaKeypadTestUser extends WebTestBase {
    */
   protected $adminUser;
 
+  /**
+   * Setup.
+   */
   protected function setUp() {
     parent::setUp();
 
