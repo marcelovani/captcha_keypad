@@ -1,7 +1,8 @@
 <?php
+
 /**
- * @file captcha_keypad.module
  * Captcha keypad module.
+ * @file captcha_keypad.module
  */
 
 use Drupal\Core\Form\FormStateInterface;
@@ -12,7 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 function captcha_keypad_help($path, $arg) {
   switch ($path) {
     case 'admin/config/captcha_keypad':
-      //@todo Write help text.
+      // @todo: Write help text.
       $content = '';
   }
 
@@ -32,9 +33,10 @@ function captcha_keypad_permission() {
 }
 
 /**
- * Implements hook_form_alter() to add the keypad to selected forms.
+ * Implements hook_form_alter().
  */
 function captcha_keypad_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Add the keypad to selected forms.
   $form_ids = \Drupal::config('captcha_keypad.settings')->get('captcha_keypad_forms');
   if (!in_array($form_id, array_filter($form_ids))) {
     return;

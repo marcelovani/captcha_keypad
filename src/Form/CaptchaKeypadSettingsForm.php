@@ -61,8 +61,10 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
    * Configuration form.
    *
    * @param array $form
-   * @param FormStateInterface $form_state
-   * @return array
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   * @return array The form.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form_ids = [];
@@ -128,7 +130,9 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
    * Form validator.
    *
    * @param array $form
-   * @param FormStateInterface $form_state
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
@@ -146,4 +150,5 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
 
     parent::submitForm($form, $form_state);
   }
+
 }
