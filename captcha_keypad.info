@@ -1,5 +1,4 @@
 name = Captcha Keypad
-project = captcha_keypad
 description = Provides a virtual keypad to be used with captcha
 core = 7.x
 package = Spam control

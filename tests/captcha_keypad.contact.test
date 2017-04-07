@@ -12,6 +12,8 @@ class CaptchaKeypadContactTest extends DrupalWebTestCase {
 
   /**
    * A user with the 'Administer Captcha keypad' permission.
+   *
+   * @var object
    */
   protected $adminUser;
 
@@ -31,8 +33,9 @@ class CaptchaKeypadContactTest extends DrupalWebTestCase {
   /**
    * Setup.
    */
-  function setUp() {
+  public function setUp() {
     parent::setUp($this->modules);
+
     $this->adminUser = $this->drupalCreateUser(
       [
         'administer captcha keypad',

@@ -8,10 +8,16 @@
  * Implements hook_help().
  */
 function captcha_keypad_help($path, $arg) {
+  $text = '';
+
   switch ($path) {
     case 'admin/config/captcha_keypad':
-      return '<p>' . t('todo.') . '</p>';
+      // @todo: Add help text.
+      $text = '';
+      break;
   }
+
+  return $text;
 }
 
 /**
