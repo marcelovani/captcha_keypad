@@ -36,8 +36,8 @@ class CaptchaKeypadTestUser extends WebTestBase {
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/modules');
     $link = $this->xpath('//a[contains(@href, :href) and contains(@id, :id)]', [
-      ':href' => 'admin/config/system/captcha_keypad',
-      ':id' => 'edit-modules-spam-control-captcha-keypad-links-configure'
+      ':href' => '/admin/config/system/captcha_keypad',
+      ':id' => 'edit-modules-captcha-keypad-links-configure'
     ]);
     $this->assertTrue(count($link) === 1, 'Link to config is present');
   }
