@@ -8,7 +8,7 @@ class CaptchaKeypadUserTest extends DrupalWebTestCase {
    *
    * @var array
    */
-  public $modules = ['contact', 'user', 'captcha_keypad'];
+  public $modules = array('contact', 'user', 'captcha_keypad');
 
   /**
    * A user with the 'Administer Captcha keypad' permission.
@@ -37,13 +37,11 @@ class CaptchaKeypadUserTest extends DrupalWebTestCase {
   public function setUp() {
     parent::setUp($this->modules);
 
-    $this->adminUser = $this->drupalCreateUser(
-      [
-        'administer captcha keypad',
-        'access administration pages',
-        'administer modules',
-      ], 'Captcha Keypad Admin', TRUE
-    );
+    $this->adminUser = $this->drupalCreateUser(array(
+      'administer captcha keypad',
+      'access administration pages',
+      'administer modules',
+    ), 'Captcha Keypad Admin', TRUE);
   }
 
   /**
