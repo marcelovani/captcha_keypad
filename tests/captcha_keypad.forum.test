@@ -1,0 +1,97 @@
+<?php
+
+class CaptchaKeypadForumTest extends DrupalWebTestCase {
+  protected $profile = 'testing';
+
+  /**
+   * Modules to enable.
+   *
+   * @var array
+   */
+  public $modules = ['comment', 'forum', 'captcha_keypad'];
+
+  /**
+   * A user with the 'Administer Captcha keypad' permission.
+   */
+  protected $adminUser;
+
+  /**
+   * Info.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Forum',
+      'description' => 'Test for forum forms.',
+      'group' => 'Captcha Keypad',
+    );
+  }
+
+  /**
+   * Setup.
+   */
+  function setUp() {
+    parent::setUp($this->modules);
+    $this->adminUser = $this->drupalCreateUser(
+      [
+        'administer captcha keypad',
+        'administer nodes',
+        'administer forums',
+        'create forum content',
+        'administer comments',
+        'access comments',
+        'post comments',
+      ], 'Captcha Keypad Admin', TRUE
+    );
+  }
+
+  /**
+   * Test for Contact forms.
+   */
+  public function testCaptchaKeypadForumForm() {
+    $this->drupalLogin($this->adminUser);
+
+    // Turn on Captcha keypad for the forum form.
+    $edit = [];
+    $edit['captcha_keypad_code_size'] = 99;
+    $edit['captcha_keypad_forms[comment_node_forum_form]'] = 1;
+    $this->drupalPost('admin/config/system/captcha_keypad', $edit, t('Save configuration'));
+
+    $this->drupalGet('admin/config/system/captcha_keypad');
+    $element = $this->xpath('//input[@type="text" and @id="edit-captcha-keypad-code-size" and @value="99"]');
+    $this->assertTrue(count($element) === 1, 'The code size is correct.');
+
+    $element = $this->xpath('//input[@type="checkbox" and @name="captcha_keypad_forms[comment_node_forum_form]" and @checked="checked"]');
+    $this->assertTrue(count($element) === 1, 'Forum form is checked.');
+
+    $this->drupalGet('forum/1');
+
+    // Create new forum topic.
+    $edit = [];
+    $edit['title'] = 'Foo';
+    $this->drupalPost('node/add/forum/1', $edit, t('Save'));
+    $this->assertText('Forum topic Foo has been created.');
+
+    $this->drupalGet('forum/1');
+    $this->clickLink('Foo');
+
+    // Submit form without captcha code.
+    $edit = [];
+    $edit['comment_body[und][0][value]'] = 'Foo';
+    $this->drupalPost($this->getUrl(), $edit, t('Save'));
+    $this->assertText('Invalid security code.');
+
+    // Submit form with captcha code.
+    $edit = [];
+    $edit['comment_body[und][0][value]'] = 'Good job';
+    $edit['captcha_keypad_input'] = 'testing';
+    $edit['captcha_keypad_keypad_used'] = 'Yes';
+    $this->drupalPost($this->getUrl(), $edit, t('Save'));
+    $link = $this->xpath('//a[contains(@href, :href)]/text()', [
+      ':href' => '/comment/1#comment-1',
+    ]);
+    $this->assertTrue($link[1] == 'Good job', 'Comment was posted');
+  }
+
+}

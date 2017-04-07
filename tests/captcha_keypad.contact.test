@@ -1,0 +1,92 @@
+<?php
+
+class CaptchaKeypadContactTest extends DrupalWebTestCase {
+  protected $profile = 'testing';
+
+  /**
+   * Modules to enable.
+   *
+   * @var array
+   */
+  public $modules = ['contact', 'captcha_keypad'];
+
+  /**
+   * A user with the 'Administer Captcha keypad' permission.
+   */
+  protected $adminUser;
+
+  /**
+   * Info.
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Contact',
+      'description' => 'Test for contact forms.',
+      'group' => 'Captcha Keypad',
+    );
+  }
+
+  /**
+   * Setup.
+   */
+  function setUp() {
+    parent::setUp($this->modules);
+    $this->adminUser = $this->drupalCreateUser(
+      [
+        'administer captcha keypad',
+        'administer contact forms',
+        'access site-wide contact form',
+        'access user contact forms',
+      ], 'Captcha Keypad Admin', TRUE
+    );
+  }
+
+  /**
+   * Test for Contact forms.
+   */
+  public function testCaptchaKeypadContactForm() {
+    $this->drupalLogin($this->adminUser);
+
+    // Add new contact form.
+    $edit = [];
+    $edit['category'] = t('Feedback');
+    $edit['recipients'] = 'email@example.com';
+    $this->drupalPost('admin/structure/contact/add', $edit, t('Save'));
+
+    // Turn on Captcha keypad for the contact form.
+    $edit = [];
+    $edit['captcha_keypad_code_size'] = 99;
+    $edit['captcha_keypad_forms[contact_personal_form]'] = 1;
+    $edit['captcha_keypad_forms[contact_site_form]'] = 1;
+    $this->drupalPost('admin/config/system/captcha_keypad', $edit, t('Save configuration'));
+
+    $this->drupalGet('admin/config/system/captcha_keypad');
+    $element = $this->xpath('//input[@type="text" and @id="edit-captcha-keypad-code-size" and @value="99"]');
+    $this->assertTrue(count($element) === 1, 'The code size is correct.');
+
+    $element = $this->xpath('//input[@type="checkbox" and @name="captcha_keypad_forms[contact_personal_form]" and @checked="checked"]');
+    $this->assertTrue(count($element) === 1, 'Contact form is checked.');
+
+    $element = $this->xpath('//input[@type="checkbox" and @name="captcha_keypad_forms[contact_site_form]" and @checked="checked"]');
+    $this->assertTrue(count($element) === 1, 'Feedback form is checked.');
+
+    // Submit form without captcha code.
+    $edit = [];
+    $edit['subject'] = 'Foo';
+    $edit['message'] = 'Bar';
+    $this->drupalPost('contact/feedback', $edit, t('Send message'));
+    $this->assertText('Invalid security code.');
+
+    // Submit the right code.
+    $edit = [];
+    $edit['subject'] = 'Foo';
+    $edit['message'] = 'Bar';
+    $edit['captcha_keypad_input'] = 'testing';
+    $edit['captcha_keypad_keypad_used'] = 'Yes';
+    $this->drupalPost('contact/feedback', $edit, t('Send message'));
+    $this->assertNoText('Invalid security code.');
+  }
+
+}
