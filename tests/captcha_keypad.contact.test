@@ -23,7 +23,7 @@ class CaptchaKeypadContactTest extends DrupalWebTestCase {
    */
   public static function getInfo() {
     return array(
-      'name' => 'Contact',
+      'name' => 'Contact Forms',
       'description' => 'Test for contact forms.',
       'group' => 'Captcha Keypad',
     );
@@ -40,7 +40,7 @@ class CaptchaKeypadContactTest extends DrupalWebTestCase {
       'administer contact forms',
       'access site-wide contact form',
       'access user contact forms',
-    ), 'Captcha Keypad Admin', TRUE);
+    ));
   }
 
   /**

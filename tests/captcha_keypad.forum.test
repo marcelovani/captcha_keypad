@@ -1,7 +1,7 @@
 <?php
 
 class CaptchaKeypadForumTest extends DrupalWebTestCase {
-  protected $profile = 'testing';
+  protected $profile = 'standard';
 
   /**
    * Modules to enable.
@@ -25,7 +25,7 @@ class CaptchaKeypadForumTest extends DrupalWebTestCase {
    */
   public static function getInfo() {
     return array(
-      'name' => 'Forum',
+      'name' => 'Forum Forms',
       'description' => 'Test for forum forms.',
       'group' => 'Captcha Keypad',
     );
@@ -45,7 +45,7 @@ class CaptchaKeypadForumTest extends DrupalWebTestCase {
         'administer comments',
         'access comments',
         'post comments',
-    ), 'Captcha Keypad Admin', TRUE);
+    ));
   }
 
   /**

@@ -23,7 +23,7 @@ class CaptchaKeypadCommentsTest extends DrupalWebTestCase {
    */
   public static function getInfo() {
     return array(
-      'name' => 'Comments',
+      'name' => 'Comment Forms',
       'description' => 'Test for comment forms.',
       'group' => 'Captcha Keypad',
     );
@@ -40,7 +40,7 @@ class CaptchaKeypadCommentsTest extends DrupalWebTestCase {
       'administer comments',
       'access comments',
       'post comments',
-    ), 'Captcha Keypad Admin', TRUE);
+    ));
   }
 
   /**
