@@ -93,8 +93,9 @@ class CaptchaKeypadForumTest extends DrupalWebTestCase {
     $link = $this->xpath('//a[contains(@href, :href)]/text()', array(
       ':href' => '/comment/1#comment-1',
     ));
-    file_put_contents('output.html', $this->drupalGetContent());
-    $this->pass($link);
+    //file_put_contents('output.html', $this->drupalGetContent());
+    $this->pass(var_export($link, TRUE));
+    $this->pass(var_export($this->drupalGetContent(), TRUE));
     $this->assertTrue($link[1] == 'Good job', 'Comment was posted');
   }
 
