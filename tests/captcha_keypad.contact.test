@@ -40,11 +40,10 @@ class CaptchaKeypadContactTest extends DrupalWebTestCase {
       'administer contact forms',
       'access site-wide contact form',
       'access user contact forms',
-      'administer themes', 'administer site configuration',
     ));
 
-    $this->drupalGet('admin/appearance');
-    $this->assertTrue(1==0, 'Checking theme '.$this->drupalGetContent());
+    $this->assertTrue(1==0, 'Admin theme '.variable_get('admin_theme'));
+    $this->assertTrue(1==0, 'Theme default '.variable_get('theme_default'));
 
   }
 
