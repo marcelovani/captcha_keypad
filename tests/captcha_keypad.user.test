@@ -50,6 +50,7 @@ class CaptchaKeypadUserTest extends DrupalWebTestCase {
   public function testLinkToConfig() {
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/modules');
+    $this->assertTrue(1==0, 'Comment was posted '.$this->drupalGetContent());
     $link = $this->xpath('//a[contains(@href, :href) and contains(@id, :id)]', array(
       ':href' => '/admin/config/system/captcha_keypad',
       ':id' => 'edit-modules-spam-control-captcha-keypad-links-configure',
