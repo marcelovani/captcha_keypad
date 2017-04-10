@@ -92,10 +92,11 @@ class CaptchaKeypadForumTest extends DrupalWebTestCase {
     $this->drupalPost($this->getUrl(), $edit, t('Save'));
     $this->assertText(t('Your comment has been posted.'), 'Comment posted.');
     $this->assertText(t('Good job!'), 'Comment is on the page.');
-//    $link = $this->xpath('//a[contains(@href, :href)]/text()', array(
-//      ':href' => '/comment/1#comment-1',
-//    ));
-//    $this->assertTrue($link[1] == 'Good job!', 'Comment was posted ');
+    // @todo: Make this work on drupal ci.
+    // $link = $this->xpath('//a[contains(@href, :href)]/text()', array(
+    //   ':href' => '/comment/1#comment-1',
+    // ));
+    // $this->assertTrue($link[1] == 'Good job!', 'Comment was posted ');
   }
 
 }
