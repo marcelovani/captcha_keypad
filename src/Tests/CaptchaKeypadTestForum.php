@@ -59,7 +59,7 @@ class CaptchaKeypadTestForum extends WebTestBase {
     // Create new forum topic.
     $edit = [];
     $edit['title[0][value]'] = 'Foo';
-    $this->drupalPostForm('node/add/forum', $edit, t('Save and publish'), ['query' => ['forum_id' => '1']]);
+    $this->drupalPostForm('node/add/forum', $edit, t('Save'), array('query' => array('forum_id' => '1')));
     $this->assertText('Forum topic Foo has been created.');
 
     // Submit form without captcha code.
