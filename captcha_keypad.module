@@ -52,10 +52,11 @@ function captcha_keypad_form_alter(&$form, FormStateInterface $form_state, $form
   ];
 
   $form['captcha_keypad']['captcha_keypad_input'] = [
-    '#title' => t('Enter code'),
+    '#title' => t('Code'),
     '#type' => 'textfield',
     '#attributes' => ['class' => ['captcha-keypad-input']],
     '#size' => $digits,
+    '#required' => TRUE,
   ];
 
   if (!isset($form_state->input['captcha_keypad_hidden'])) {
@@ -111,15 +112,14 @@ function captcha_keypad_form_alter(&$form, FormStateInterface $form_state, $form
  */
 function captcha_keypad_form_validate(array &$form, FormStateInterface $form_state) {
   $input = $form_state->getUserInput();
-  if (!isset($input['captcha_keypad_hidden'])) {
-    return;
+  foreach (['input', 'hidden', 'keypad_used'] as $i) {
+    $v = "captcha_keypad_$i";
+    $$v = isset($input[$v]) ? $input[$v] : '';
   }
 
-  if ($input['captcha_keypad_input'] != $input['captcha_keypad_hidden'] ||
-    $input['captcha_keypad_keypad_used'] != 'Yes'
-  ) {
+  if ($captcha_keypad_input != $captcha_keypad_hidden || $captcha_keypad_keypad_used != 'Yes') {
     _captcha_keypad_add_js_css($form);
-    $form_state->setErrorByName('captcha_keypad_input', t("Invalid security code."));
+    $form_state->setErrorByName('captcha_keypad_input', t('Invalid security code.'));
   }
 }
 

@@ -70,7 +70,7 @@ class CaptchaKeypadTestContact extends WebTestBase {
     $edit['subject[0][value]'] = 'Foo';
     $edit['message[0][value]'] = 'Bar';
     $this->drupalPostForm('contact/feedback', $edit, t('Send message'));
-    $this->assertText('Invalid security code.');
+    $this->assertText('Code field is required.');
 
     // Submit the right code.
     $edit = [];

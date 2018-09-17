@@ -66,7 +66,7 @@ class CaptchaKeypadTestForum extends WebTestBase {
     $edit = [];
     $edit['comment_body[0][value]'] = 'Foo';
     $this->drupalPostForm($this->getUrl(), $edit, t('Save'));
-    $this->assertText('Invalid security code.');
+    $this->assertText('Code field is required.');
 
     // Submit form with captcha code.
     $edit = [];

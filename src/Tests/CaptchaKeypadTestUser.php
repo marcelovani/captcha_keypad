@@ -26,6 +26,13 @@ class CaptchaKeypadTestUser extends WebTestBase {
   protected $adminUser;
 
   /**
+   * Authenticated user.
+   *
+   * @var $user
+   */
+  protected $user;
+
+  /**
    * Setup.
    */
   protected function setUp() {
@@ -33,6 +40,7 @@ class CaptchaKeypadTestUser extends WebTestBase {
 
     // Create admin user.
     $this->adminUser = $this->drupalCreateUser(['administer captcha keypad'], 'Captcha Keypad Admin', TRUE);
+    $this->user = $this->drupalCreateUser();
   }
 
   /**
@@ -105,6 +113,56 @@ class CaptchaKeypadTestUser extends WebTestBase {
 
     $element = $this->xpath('//input[@type="text" and @id="edit-captcha-keypad-input" and @value=""]');
     $this->assertTrue(count($element) === 1, 'The input text is present.');
+  }
+
+  /**
+   * Test Form validation.
+   */
+  public function testFormValidation() {
+    // Test form validation callback.
+    $edit = array();
+    $edit['name'] = $this->user->getUsername();
+    $edit['pass'] = $this->user->pass_raw;
+    $edit['form_id'] = 'user_login_form';
+
+    $this->drupalPost('user/login', '', $edit);
+    $this->assertText('Member for');
+    $this->assertNoText('Invalid security code.');
+    $this->drupalLogout();
+
+    // Turn on captcha keypad on login form.
+    \Drupal::configFactory()
+      ->getEditable('captcha_keypad.settings')
+      ->set('captcha_keypad_forms', ['user_login_form' => 'user_login_form'])
+      ->save();
+
+    // Test submission with empty code.
+    $this->drupalPost('user/login', '', $edit);
+    $this->assertText('Code field is required.');
+
+    // Test submission without tap or mouse click.
+    $edit['captcha_keypad_input'] = 0;
+    $this->drupalPost('user/login', '', $edit);
+    $this->assertText('Invalid security code.');
+
+    // Enable testing mode.
+    \Drupal::configFactory()
+      ->getEditable('captcha_keypad.settings')
+      ->set('captcha_keypad_code_size', 99)
+      ->save();
+
+    // Test submission with invalid code.
+    $edit['captcha_keypad_input'] = 0;
+    $edit['captcha_keypad_keypad_used'] = 'Yes';
+    $this->drupalPost('user/login', '', $edit);
+    $this->assertText('Invalid security code.');
+
+    // Test submission with correct code using keyboard input.
+    $edit['captcha_keypad_input'] = 'testing';
+    $edit['captcha_keypad_hidden'] = 'testing';
+    $edit['form_build_id'] = 'form-Yroett0LDDV9jJsX8mhmQT8NzoPoSh6Oc2triqw2pbE';
+    $this->drupalPost('user/login', '', $edit);
+    $this->assertText('Member for');
   }
 
 }
