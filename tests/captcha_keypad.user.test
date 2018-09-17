@@ -18,6 +18,13 @@ class CaptchaKeypadUserTest extends DrupalWebTestCase {
   protected $adminUser;
 
   /**
+   * Authenticated user.
+   *
+   * @var $user
+   */
+  protected $user;
+
+  /**
    * Info.
    *
    * @return array
@@ -42,6 +49,7 @@ class CaptchaKeypadUserTest extends DrupalWebTestCase {
       'access administration pages',
       'administer modules',
     ));
+    $this->user = $this->drupalCreateUser();
   }
 
   /**
@@ -116,6 +124,45 @@ class CaptchaKeypadUserTest extends DrupalWebTestCase {
 
     $element = $this->xpath('//input[@type="text" and @id="edit-captcha-keypad-input" and @value=""]');
     $this->assertTrue(count($element) === 1, 'The input text is present.');
+  }
+
+  /**
+   * Test Form validation.
+   */
+  public function testFormValidation() {
+    // Test form validation callback.
+    $edit = array();
+    $edit['name'] = $this->user->name;
+    $edit['pass'] = $this->user->pass_raw;
+    $this->drupalPost('user/login', $edit, t('Log in'));
+    $this->assertText('Member for');
+    $this->drupalLogout();
+
+    // Turn on captcha keypad on login form.
+    variable_set('captcha_keypad_forms', array('user_login' => 'user_login'));
+
+    // Test submission with empty code.
+    $this->drupalPost('user/login', $edit, t('Log in'));
+    $this->assertText('Code field is required.');
+
+    // Test submission without tap or mouse click.
+    $edit['captcha_keypad_input'] = 0;
+    $this->drupalPost('user/login', $edit, t('Log in'));
+    $this->assertText('Invalid security code.');
+
+    // Enable testing mode.
+    variable_set('captcha_keypad_code_size', 99);
+
+    // Test submission with invalid code.
+    $edit['captcha_keypad_input'] = 0;
+    $edit['captcha_keypad_keypad_used'] = 'Yes';
+    $this->drupalPost('user/login', $edit, t('Log in'));
+    $this->assertText('Invalid security code.');
+
+    // Test submission with correct code using keyboard input.
+    $edit['captcha_keypad_input'] = 'testing';
+    $this->drupalPost('user/login', $edit, t('Log in'));
+    $this->assertText('Member for');
   }
 
 }

@@ -34,3 +34,7 @@
 #edit-captcha-keypad-input {
   max-width: 70px;
 }
+
+.captcha-keypad-input {
+  width: 50px;
+}

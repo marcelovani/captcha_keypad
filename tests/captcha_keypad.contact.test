@@ -77,7 +77,10 @@ class CaptchaKeypadContactTest extends DrupalWebTestCase {
     $edit['subject'] = 'Foo';
     $edit['message'] = 'Bar';
     $this->drupalPost('contact/feedback', $edit, t('Send message'));
-    $this->assertText('Invalid security code.');
+    $this->assertText('Code field is required.');
+
+    // Enable testing mode.
+    variable_set('captcha_keypad_code_size', 99);
 
     // Submit the right code.
     $edit = array();

@@ -82,7 +82,10 @@ class CaptchaKeypadForumTest extends DrupalWebTestCase {
     $edit = array();
     $edit['comment_body[und][0][value]'] = 'Foo';
     $this->drupalPost($this->getUrl(), $edit, t('Save'));
-    $this->assertText('Invalid security code.');
+    $this->assertText('Code field is required.');
+
+    // Enable testing mode.
+    variable_set('captcha_keypad_code_size', 99);
 
     // Submit form with captcha code.
     $edit = array();
