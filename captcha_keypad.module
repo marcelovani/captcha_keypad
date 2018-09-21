@@ -9,16 +9,17 @@
  * Implements hook_help().
  */
 function captcha_keypad_help($path, $arg) {
-  $text = '';
+  $output = '';
 
   switch ($path) {
-    case 'admin/config/captcha_keypad':
-      // @todo: Add help text.
-      $text = '';
-      break;
+    case 'admin/help#captcha_keypad':
+      $contents = file_get_contents(drupal_get_path('module', 'captcha_keypad') . '/README.txt');
+      $output = module_exists('markdown')
+              ? filter_xss_admin(module_invoke('markdown', 'filter', 'process', 0, -1, $contents))
+              : '<pre>' . check_plain($contents) . '</pre>';
   }
 
-  return $text;
+  return $output;
 }
 
 /**
