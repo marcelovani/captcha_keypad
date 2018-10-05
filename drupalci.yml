@@ -20,7 +20,6 @@ build:
         sniff-all-files: false
         halt-on-fail: false
     testing:
-      verbose: true
       # run_tests task is executed several times in order of performance speeds.
       # halt-on-fail can be set on the run_tests tasks in order to fail fast.
       # suppress-deprecations is false in order to be alerted to usages of
@@ -40,6 +39,7 @@ build:
          testgroups: '--all'
          suppress-deprecations: false
          halt-on-fail: false
+         verbose: true
       run_tests.functional:
         types: 'PHPUnit-Functional'
         testgroups: '--all'
