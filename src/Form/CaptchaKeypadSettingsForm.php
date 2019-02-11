@@ -88,7 +88,7 @@ class CaptchaKeypadSettingsForm extends ConfigFormBase {
 
     // Contact.
     if ($this->moduleHandler->moduleExists('contact')) {
-      $ids = \Drupal::service('entity.query')->get('contact_form')->execute();
+      $ids = \Drupal::entityQuery('contact_form')->execute();
       foreach ($ids as $id) {
         $form_ids['contact_message_' . $id . '_form'] = $this->t('Contact: :id', [':id' => $id]);
       }
