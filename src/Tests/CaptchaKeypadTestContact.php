@@ -67,7 +67,7 @@ class CaptchaKeypadTestContact extends WebTestBase {
 
     // Submit form without captcha code.
     $edit = [];
-    $edit['subject[0][value]'] = 'Foo';
+    $edit['subject[0][value]'] = 'Fooooooooo';
     $edit['message[0][value]'] = 'Bar';
     $this->drupalPostForm('contact/feedback', $edit, t('Send message'));
     $this->assertText('Code field is required.');
