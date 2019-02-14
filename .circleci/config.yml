@@ -1,0 +1,10 @@
+# PHP CircleCI 2.0 configuration file
+version: 2
+jobs:
+  build:
+    machine:
+      docker_layer_caching: true
+    steps:
+      - run:
+          name: Run tests
+          command: docker run marcellovani/drupalci:8-fpm-alpine /bin/sh -c "sh runtests.sh 8 ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_BRANCH}-dev https://github.com/marcelovani/captcha_keypad.git"
