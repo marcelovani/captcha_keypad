@@ -5,5 +5,5 @@ jobs:
     docker:
       - image: marcellovani/drupalci:8-fpm-alpine
     steps:
-      - checkout
+      - run: pwd && ls
       - run: sh runtests.sh 8 captcha_keypad 8.x1.x-dev
