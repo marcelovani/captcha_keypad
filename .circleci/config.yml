@@ -1,15 +1,9 @@
 # PHP CircleCI 2.0 configuration file
-version: 2
+version: 2.0
 jobs:
   build:
     docker:
       - image: marcellovani/drupalci:8-fpm-alpine
-    machine: true
     steps:
       - checkout
       - run: sh runtests.sh 8 captcha_keypad 8.x1.x-dev
-workflows:
-  version: 2
-  build:
-    jobs:
-      - build
