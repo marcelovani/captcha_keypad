@@ -10,6 +10,6 @@ jobs:
       - run: sh runtests.sh 8 captcha_keypad 8.x1.x-dev
 workflows:
   version: 2
-  build_and_test:
+  build:
     jobs:
       - build
