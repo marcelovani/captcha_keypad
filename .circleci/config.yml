@@ -2,7 +2,8 @@
 version: 2
 jobs:
   build:
-    machine: true
+    docker:
+      - image: marcellovani/drupalci:8-fpm-alpine
     steps:
       - run: |
           docker run marcellovani/drupalci:8-fpm-alpine /bin/sh -c "sh runtests.sh 8 ${CIRCLE_PROJECT_REPONAME} 1.x-dev"
