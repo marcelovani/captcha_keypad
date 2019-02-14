@@ -7,4 +7,4 @@ jobs:
     steps:
       - run:
           name: Run tests
-          command: docker run marcellovani/drupalci:8-fpm-alpine /bin/sh -c "sh runtests.sh 8 ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_BRANCH}-dev https://github.com/marcelovani/captcha_keypad.git"
+          command: docker run marcellovani/drupalci:8-fpm-alpine /bin/sh -c "sh runtests.sh 8 ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_BRANCH}-dev ${CIRCLE_REPOSITORY_URL}"
