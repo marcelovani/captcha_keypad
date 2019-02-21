@@ -14,4 +14,4 @@ jobs:
                    --version ${CIRCLE_BRANCH}-dev
                    --vcs https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git
       - store_artifacts:
-          path: /tmp/drupalci/verbose
+          path: /tmp/drupalci/results
