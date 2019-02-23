@@ -13,7 +13,7 @@ function captcha_keypad_help($path, $arg) {
 
   switch ($path) {
     case 'admin/help#captcha_keypad':
-      $contents = file_get_contents(drupal_get_path('module', 'captcha_keypad') . '/README.txt');
+      $contents = file_get_contents(drupal_get_path('module', 'captcha_keypad') . '/README.md');
       $output = module_exists('markdown')
               ? filter_xss_admin(module_invoke('markdown', 'filter', 'process', 0, -1, $contents))
               : '<pre>' . check_plain($contents) . '</pre>';
