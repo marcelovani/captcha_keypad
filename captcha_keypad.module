@@ -15,7 +15,7 @@ function captcha_keypad_help($path, $arg) {
 
   switch ($path) {
     case 'help.page.captcha_keypad':
-      $filepath = dirname(__FILE__) . '/README.txt';
+      $filepath = dirname(__FILE__) . '/README.md';
       if (file_exists($filepath)) {
         $output = nl2br(file_get_contents($filepath));
       }
